@@ -36,7 +36,14 @@ PostgreSQL에서 위 네개의 `Transaction Isolation Level`중 어떤것이든 
 Postgresql의 command에서 다음 명령을 통해 현재 설정 된 Transaction Isolation Level을 확인할 수 있다. 
 
 ```sql
-psql> SHOW default_transaction_isolation;   
+psql> SHOW transaction_isolation;   
+read commited
+```
+
+PostgreSQL의 기본 Transaction Isolation Level은 다음 명령을 통해 확인할 수 있다. 
+
+```sql
+psql> SHOW default_transaction_isolation;
 read commited
 ```
 
@@ -53,3 +60,5 @@ transaction_read_only  | off            | Sets the current transaction's read-on
 
 * [13.2. Transaction Isolation](https://www.postgresql.org/docs/11/transaction-iso.html)
 * [Isolation (database systems)](https://en.wikipedia.org/wiki/Isolation_%28database_systems%29#Non-repeatable_reads)
+* [Transaction Isolation Levels in PostgreSQL](http://shiroyasha.io/transaction-isolation-levels-in-postgresql.html)
+* [Postgres Transaction Isolation Levels](https://malisper.me/postgres-transaction-isolation-levels/)
