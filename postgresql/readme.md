@@ -44,11 +44,30 @@ PostgreSQL에서 위 네개의 `Transaction Isolation Level`중 어떤것이든 
 >트랜잭션이 커밋되지 않은 동시 트랜잭션에 의해 작성된 데이터를 읽는 것.  
 예를들어, B라는 사용자가 데이터를 쓰고, A라는 사용자가 해당 데이터를 읽어갔는데 B가 해당 데이터를 롤백한 경우 데이터가 불일치 하게 된다.
 
-위 설명을 재현해보자.  
+위 설명을 재현해보자. 이를 재현하기 위해서는 별도의 세션을 열어야한다. 따라서 별도의 command화면에서 각각 `psql`을 통해서 DB에 연결을 맺도록 하자.  
 
+우선, 다음과 같이 테스트를 위한 테이블을 생성한 후 `begin`명령을 통해 트랜잭션을 열자. 그리고 데이터를 하나 입력한 후 `commit`은 하지 않았다. 
 
+```sql
+$ psql -h localhost -p 5432 -U postgres
+postgres=# create table  t (a int, b int);
+CREATE TABLE
+postgres=# begin ;
+BEGIN
+postgres=# insert into t values (1, 100);
+INSERT 0 1
+```
 
+다른 세션에서 테스트를 위해 생성해둔 테이블을 읽어보자. 
 
+```sql
+postgres=# select * from t;
+ a | b
+---+---
+(0 rows)
+```
+
+`dirty read`를 확인하기 위해서는 앞서 입력한 데이터가 보여야한다. 하지만 결과는 위와같다. 이는 `PostgreSQL`의 default`Transaction Isolation Level`이 `Read uncommitted`이기 때문이다. 따라사 `PostgreSQL`에서는 `dirty read`를 확인할 수 없다.  
 
 
 ## How to know transaction isolation level
