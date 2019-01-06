@@ -26,9 +26,29 @@ SQL표준과 PostgreSQL은 다음과 같이 `Transaction Isolation Level`을 구
 |Repeatable read|Not possible|Not possible|Allowed, but not in PG|Possible|
 |Serializable|Not possible|Not possible|Not possible|Not possible|
 
-PostgreSQL에서 위 네개의 `Transaction Isolation Level`중 어떤것이든 사용할 수 있다. 하지만 내부적으로는 세가지만 구현이되어있는데, 예를들어, `Read Uncommitted`모드은 `Read Committed`와 동일하다. 
+PostgreSQL에서 위 네개의 `Transaction Isolation Level`중 어떤것이든 사용할 수 있다. 하지만 내부적으로는 세가지만 구현이되어있는데, 예를들어, `Read Uncommitted`모드는 `Read Committed`와 동일하다. 
 
 위 테이블은 PostgreSQL의 `Repeatable Read`의 구현이 `Phantom read`를 허용하지 않음을 나타내고 있다. 
+
+이제 앞서 설명했던 다음 네가지 현상에 대해서 좀 더 자세히 알아보도록하자.  
+
+* dirty read
+* nonrepeatable read
+* phantom read
+* serialize anomaly
+
+## dirty read
+
+앞서 `dirty read`에 대해서 다음과 같이 설명했었다. 
+
+>트랜잭션이 커밋되지 않은 동시 트랜잭션에 의해 작성된 데이터를 읽는 것.  
+예를들어, B라는 사용자가 데이터를 쓰고, A라는 사용자가 해당 데이터를 읽어갔는데 B가 해당 데이터를 롤백한 경우 데이터가 불일치 하게 된다.
+
+위 설명을 재현해보자.  
+
+
+
+
 
 
 ## How to know transaction isolation level
@@ -62,3 +82,4 @@ transaction_read_only  | off            | Sets the current transaction's read-on
 * [Isolation (database systems)](https://en.wikipedia.org/wiki/Isolation_%28database_systems%29#Non-repeatable_reads)
 * [Transaction Isolation Levels in PostgreSQL](http://shiroyasha.io/transaction-isolation-levels-in-postgresql.html)
 * [Postgres Transaction Isolation Levels](https://malisper.me/postgres-transaction-isolation-levels/)
+* [Transaction Isolation in PostgreSQL](https://pgdash.io/blog/postgres-transactions.html)
