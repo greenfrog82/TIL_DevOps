@@ -61,6 +61,7 @@ INSERT 0 1
 다른 세션에서 테스트를 위해 생성해둔 테이블을 읽어보자. 
 
 ```sql
+$ psql -h localhost -p 5432 -U postgres
 postgres=# select * from t;
  a | b
 ---+---
@@ -68,7 +69,66 @@ postgres=# select * from t;
 ```
 
 `dirty read`를 확인하기 위해서는 앞서 입력한 데이터가 보여야한다. 하지만 결과는 위와같다. 이는 `PostgreSQL`의 default`Transaction Isolation Level`이 `Read uncommitted`이기 때문이다. 따라사 `PostgreSQL`에서는 `dirty read`를 확인할 수 없다.  
+## Repeatable Read
 
+앞서 `nonrepeatable read`에 대해서 다음과 같이 설명했었다. 
+
+>트랜잭션이 같은 데이터를 두번 읽을 때, 다른 트랜잭션(초기 읽기 이후 커밋 된 트랜잭션)에 의해 데이터가 수정되었음을 알게되는 것.
+예를들어, A라는 사용자가 같은 쿼리를 두번 실행한다. 그 사이에 B라는 사용자가 데이터를 수정한다. A라는 사용자의 두 쿼리 결과가 달라진다. 
+
+위 문제를 재현해보자. 먼저 첫번째 세션에서 트랜잭션을 연 후 SELECT 쿼리를 통해 테이블의 데이터를 확인해보자. 앞서 `dirty read`때 입력 했던 데이터가 보인다. 
+
+```sql
+$ docker exec -it 71 psql -U postgres
+psql (9.6.11)
+Type "help" for help.
+
+postgres=# begin;
+BEGIN
+postgres=# select * from t;
+ a |  b
+---+-----
+ 1 | 100
+(1 row)
+```
+
+이제 두번째 세션에서 트랜잭션을 연 후 동일하게 SELECT를 쿼리를 통해 테이블의 데이터를 확인해보자. 첫번째 세션과 동일한 결과가 출력된다. 
+
+```sql
+docker exec -it 71 psql -U postgres
+psql (9.6.11)
+Type "help" for help.
+
+postgres=# begin;
+BEGIN
+postgres=# select * from t;
+ a |  b
+---+-----
+ 1 | 100
+(1 row)
+```
+
+역시 두번째 세션에서 해당 테이블의 데이터를 100에서 200으로 변경한 후 `COMMIT`을 수행한다.
+
+```sql
+postgres=# update t set b = 200 where a = 1;
+UPDATE 1
+postgres=# commit;
+COMMIT
+postgres=#
+```
+
+첫번째 세션에서 테이블의 데이터를 읽으면, 두번째 세션에서 변경한 데이터를 확인 할 수 있다. 
+
+```sql
+postgres=# select * from t;
+ a |  b
+---+-----
+ 1 | 200
+(1 row)
+
+postgres=#
+```
 
 ## How to know transaction isolation level
 
