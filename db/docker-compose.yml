@@ -1,0 +1,21 @@
+version: '3'
+services:
+  devops_psql:
+    container_name: devops_psql
+    restart: always
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgresql/repo:/var/lib/postgresql/data
+  devops_mysql:
+    container_name: devops_mysql
+    restart: always
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: test 
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql/repo:/var/lib/mysql/
