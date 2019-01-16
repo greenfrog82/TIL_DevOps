@@ -1,5 +1,9 @@
 # Transaction Isolation Level
 
+## What is Transaction Isolation level?
+
+`Transaction`은 `RDBMS`에서 데이터를 변경하기 위한 근본적인 방법이다. `RDBMS`에서는 하나 이상의 `Transaction`이 동시에 동작하는것을 허용한다. 그리고 개발자가 각각의 `Transaction`이 서로 어떻게 상호작용할것인가를 명시하기 위한 표준 또는 특정 RDBMS에서 정의한 툴을 제공한다. 
+
 SQL표준은 4개의 Transaction Isolation Level을 정의한다. 가장 엄격한 것은 `Serializable`이며,  `Serializable` 트랜잭션들의 동시 실행은 한 번에 하나씩 순서대로 실행하는 것과 동일하게 동작한다. 다른 세가지 레벨에서는 각 레벨에서 발생하면 안되는 동시 트랜잭션 사이의 상호작용으로 인한 현상에 의해 정의된다.  
 
 다음은 각 레벨에서 금지된 현상들이다. 
@@ -69,7 +73,7 @@ postgres=# select * from t;
 (0 rows)
 ```
 
-`dirty read`를 확인하기 위해서는 앞서 입력한 데이터가 보여야한다. 하지만 결과는 위와같다. 이는 `PostgreSQL`의 default`Transaction Isolation Level`이 `Read uncommitted`이기 때문이다. 따라사 `PostgreSQL`에서는 `dirty read`를 확인할 수 없다.  
+`dirty read`를 확인하기 위해서는 앞서 입력한 데이터가 보여야한다. 하지만 결과는 위와같다. 이는 `PostgreSQL`의 default`Transaction Isolation Level`이 `Read Committed`이기 때문이다. 따라서 `PostgreSQL`에서는 `dirty read`를 확인할 수 없다.  
 
 ### Case Of MySQL
 
