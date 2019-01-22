@@ -1,5 +1,9 @@
 # Transaction Isolation Level
 
+## What is Transaction Isolation level?
+
+`Transaction`은 `RDBMS`에서 데이터를 변경하기 위한 근본적인 방법이다. `RDBMS`에서는 하나 이상의 `Transaction`이 동시에 동작하는것을 허용한다. 그리고 개발자가 각각의 `Transaction`이 서로 어떻게 상호작용할것인가를 명시하기 위한 표준 또는 특정 RDBMS에서 정의한 툴을 제공한다. 
+
 SQL표준은 4개의 Transaction Isolation Level을 정의한다. 가장 엄격한 것은 `Serializable`이며,  `Serializable` 트랜잭션들의 동시 실행은 한 번에 하나씩 순서대로 실행하는 것과 동일하게 동작한다. 다른 세가지 레벨에서는 각 레벨에서 발생하면 안되는 동시 트랜잭션 사이의 상호작용으로 인한 현상에 의해 정의된다.  
 
 다음은 각 레벨에서 금지된 현상들이다. 
@@ -13,7 +17,6 @@ SQL표준은 4개의 Transaction Isolation Level을 정의한다. 가장 엄격�
 * phantom read
     트랜잭션은 검색 조건을 만족하는 행 집합을 반환하는 쿼리를 다시 실행하고 조건을 만족하는 행 집합이 최근에 커밋 된 다른 트랜잭션으로 인해 변경되었음을 알게되는 것.
     예를들어, A라는 사용자가 같은 쿼리를 두번 실행한다. 그 사이에 B라는 사용자가 데이터를 삭제하거나 추가한다. A라는 사용자의 두 쿼리 결과가 달라진다. 
-
 * serialization anomaly
     성공적으로 커밋 된 트랜잭션 그룹은 각각 트랜잭션을 하나씩 실행할 수 있는 순서와 일치하지 않는다. 
 
@@ -28,21 +31,23 @@ SQL표준과 PostgreSQL은 다음과 같이 `Transaction Isolation Level`을 구
 
 PostgreSQL에서 위 네개의 `Transaction Isolation Level`중 어떤것이든 사용할 수 있다. 하지만 내부적으로는 세가지만 구현이되어있는데, 예를들어, `Read Uncommitted`모드는 `Read Committed`와 동일하다. 
 
-위 테이블은 PostgreSQL의 `Repeatable Read`의 구현이 `Phantom read`를 허용하지 않음을 나타내고 있다. 
+위 테이블은 PostgreSQL의 `Repeatable Read`의 구현이 `Phantom read`를 허용하지 않음을 나타내고 있다. 반면, MySQL의 InnoDB의 경우 SQL표준에 따른 `Transaction Isolation Level`을 구현하고 있다. (본 문서에서 MySQL에 대한 설명은 InnoDB에 국한한다.)
 
-이제 앞서 설명했던 다음 네가지 현상에 대해서 좀 더 자세히 알아보도록하자.  
+이제 앞서 설명했던 네가지 `Transaction Isolation Level`에대해서 `PostgreSQL`과 `MySQL`의 예제를 통해 좀 더 자세히 알아보도록하자.  
 
-* dirty read
-* nonrepeatable read
-* phantom read
-* serialize anomaly
+* Read Uncommitted (dirty read)
+* Read Committed (nonrepeatable read)
+* Repeatable Read (phantom read)
+* Serialzable (serialize anomaly)
 
-## dirty read
+## Read Uncommitted (dirty read)
 
-앞서 `dirty read`에 대해서 다음과 같이 설명했었다. 
+앞서 `Read Uncommitted (dirty read)`에 대해서 다음과 같이 설명했었다. 
 
 >트랜잭션이 커밋되지 않은 동시 트랜잭션에 의해 작성된 데이터를 읽는 것.  
 예를들어, B라는 사용자가 데이터를 쓰고, A라는 사용자가 해당 데이터를 읽어갔는데 B가 해당 데이터를 롤백한 경우 데이터가 불일치 하게 된다.
+
+### Case Of PostgreSQL
 
 위 설명을 재현해보자. 이를 재현하기 위해서는 별도의 세션을 열어야한다. 따라서 별도의 command화면에서 각각 `psql`을 통해서 DB에 연결을 맺도록 하자.  
 
@@ -68,7 +73,125 @@ postgres=# select * from t;
 (0 rows)
 ```
 
-`dirty read`를 확인하기 위해서는 앞서 입력한 데이터가 보여야한다. 하지만 결과는 위와같다. 이는 `PostgreSQL`의 default`Transaction Isolation Level`이 `Read uncommitted`이기 때문이다. 따라사 `PostgreSQL`에서는 `dirty read`를 확인할 수 없다.  
+`dirty read`를 확인하기 위해서는 앞서 입력한 데이터가 보여야한다. 하지만 결과는 위와같다. 이는 `PostgreSQL`의 default`Transaction Isolation Level`이 `Read Committed`이기 때문이다. 따라서 `PostgreSQL`에서는 `dirty read`를 확인할 수 없다.  
+
+### Case Of MySQL
+
+우선 테스트를 진행하기 전에, 테스트를 진행하기 위한 준비부터하자.   
+
+1. 테스트를 위한 데이터베이스 생성.
+2. 테스트를 위한 테이블 생성.
+3. 테스트를 위한 데이터 입력. 
+
+```sql
+mysql> use sdy;
+Database changed
+mysql> CREATE TABLE user (
+    ->     id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    ->     name VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO user (name) VALUES ("jupiny");
+Query OK, 1 row affected (0.07 sec)
+
+mysql> INSERT INTO user (name) VALUES ("jupiny2");
+Query OK, 1 row affected (0.08 sec)
+
+mysql> INSERT INTO user (name) VALUES ("jupiny3");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM user;
++----+---------+
+| id | name    |
++----+---------+
+|  1 | jupiny  |
+|  2 | jupiny2 |
+|  3 | jupiny3 |
++----+---------+
+3 rows in set (0.00 sec)
+```
+
+이제 첫번째 Session-1에 `Transaction Isolation Level`을 `Read Uncommitted`를 설정한 후 잘 설정되었는지 확인하자.  
+
+```sql
+mysql> SET SESSION transaction isolation level READ UNCOMMITTED;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT @@SESSION.transaction_isolation, @@SESSION.transaction_read_only;
++---------------------------------+---------------------------------+
+| @@SESSION.transaction_isolation | @@SESSION.transaction_read_only |
++---------------------------------+---------------------------------+
+| READ-UNCOMMITTED                |                               0 |
++---------------------------------+---------------------------------+
+1 row in set (0.00 sec)
+```
+
+이제 트랜잭션을 열고, `user`테이블의 데이터를 읽어보자. 앞서 넣어뒀던 데이터가 그대로 읽힌것을 확인 할 수 있다. `Session-1`에 열어놓은 트랜잭션을 `Transaction-1`이라고 하자.
+
+```sql
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM user;
++----+---------+
+| id | name    |
++----+---------+
+|  1 | jupiny  |
+|  2 | jupiny2 |
+|  3 | jupiny3 |
++----+---------+
+3 rows in set (0.00 sec)
+```
+
+이제 `Session-2`에서 `Transaction-2`을 열어서 데이터를 변경하고 추가해보자.  
+이때 중요한것은 해당 트랜잭션을 절대 커밋해서는 안된다. 
+
+```sql
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update user set name = "greenfrog";
+Query OK, 3 rows affected (0.00 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> insert into user(name) values("mysql");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from user;
++----+-----------+
+| id | name      |
++----+-----------+
+|  1 | greenfrog |
+|  2 | greenfrog |
+|  3 | greenfrog |
+|  4 | mysql     |
++----+-----------+
+4 rows in set (0.00 sec)
+```
+
+`Transaction-1`에서 다시 user 테이블을 읽어보자. `Transaction-2`에서 변경한 데이터들이 반영되어 나타나는것을 확인 할 수 있다.  
+
+```sql
+mysql> select * from user;
++----+-----------+
+| id | name      |
++----+-----------+
+|  1 | greenfrog |
+|  2 | greenfrog |
+|  3 | greenfrog |
+|  4 | mysql     |
++----+-----------+
+4 rows in set (0.00 sec)
+```
+
+위와 같이 MySQL의 InnoDB의 `Read Uncommitted`에서는, `Transaction-2`에서 아직 커밋을하지 않았음에도 불구하고, `Transaction-1`에서는 그 데이터들을 읽어옴을 볼 수 있다. 
+READ UNCOMMITTED level에서는 아래 세 가지 현상이 모두 발생함을 알 수 있다.
+
+* 아직 COMMIT 되지 않은 신뢰할 수 없는 데이터를 읽어옴(dirty read)
+* 한 트랜잭션에서 동일한 SELECT 쿼리의 결과가 다름(non-repeatable read)
+* 이전의 SELECT 쿼리의 결과에 없던 row가 생김(phantom read) 
+
 ## Repeatable Read
 
 앞서 `nonrepeatable read`에 대해서 다음과 같이 설명했었다. 
@@ -132,6 +255,8 @@ postgres=#
 
 ## How to know transaction isolation level
 
+### Case Of PostgreSQL
+
 Postgresql의 command에서 다음 명령을 통해 현재 설정 된 Transaction Isolation Level을 확인할 수 있다. 
 
 ```sql
@@ -155,6 +280,34 @@ transaction_isolation  | read committed | Sets the current transaction's isolati
 transaction_read_only  | off            | Sets the current transaction's read-only status.  
 ```
 
+### Case Of MySQL
+
+MySQL의 경우 `Global Transaction Isolation Level`과 `Session Transaction Isolation Level`이 각각 존재한다. 
+
+#### Global Transaction Isolation Level
+
+```sql
+mysql> SELECT @@GLOBAL.transaction_isolation, @@GLOBAL.transaction_read_only;
++--------------------------------+--------------------------------+
+| @@GLOBAL.transaction_isolation | @@GLOBAL.transaction_read_only |
++--------------------------------+--------------------------------+
+| REPEATABLE-READ                |                              0 |
++--------------------------------+--------------------------------+
+1 row in set (0.00 sec)
+```
+
+#### Sessio Transaction Isolation Level
+
+```sql
+mysql> SELECT @@SESSION.transaction_isolation, @@SESSION.transaction_read_only;
++---------------------------------+---------------------------------+
+| @@SESSION.transaction_isolation | @@SESSION.transaction_read_only |
++---------------------------------+---------------------------------+
+| REPEATABLE-READ                 |                               0 |
++---------------------------------+---------------------------------+
+1 row in set (0.00 sec)
+```
+
 # Reference
 
 * [13.2. Transaction Isolation](https://www.postgresql.org/docs/11/transaction-iso.html)
@@ -162,3 +315,5 @@ transaction_read_only  | off            | Sets the current transaction's read-on
 * [Transaction Isolation Levels in PostgreSQL](http://shiroyasha.io/transaction-isolation-levels-in-postgresql.html)
 * [Postgres Transaction Isolation Levels](https://malisper.me/postgres-transaction-isolation-levels/)
 * [Transaction Isolation in PostgreSQL](https://pgdash.io/blog/postgres-transactions.html)
+* [MySQL의 Transaction Isolation Levels](https://jupiny.com/2018/11/30/mysql-transaction-isolation-levels/)
+* [13.3.7 SET TRANSACTION Syntax](https://dev.mysql.com/doc/refman/8.0/en/set-transaction.html)
