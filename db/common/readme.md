@@ -12,6 +12,10 @@
 * **Abort** : `Transaction`이 중단되면, 모든 로직의 수행은 취소된다. 
 * **Commit** : `Transaction`이 commit되면, `Transaction`로직이 반영된다. 
 
+### **C**onsistency
+
+
+
 ## What is Transaction Isolation level?
 
 `Transaction`은 `RDBMS`에서 데이터를 변경하기 위한 근본적인 방법이다. `RDBMS`에서는 하나 이상의 `Transaction`이 동시에 동작하는것을 허용한다. 그리고 개발자가 각각의 `Transaction`이 서로 어떻게 상호작용할것인가를 명시하기 위한 표준 또는 특정 RDBMS에서 정의한 툴을 제공한다. 
@@ -211,6 +215,8 @@ READ UNCOMMITTED level에서는 아래 세 가지 현상이 모두 발생함을 
 >트랜잭션이 같은 데이터를 두번 읽을 때, 다른 트랜잭션(초기 읽기 이후 커밋 된 트랜잭션)에 의해 데이터가 수정되었음을 알게되는 것.
 예를들어, A라는 사용자가 같은 쿼리를 두번 실행한다. 그 사이에 B라는 사용자가 데이터를 수정한다. A라는 사용자의 두 쿼리 결과가 달라진다. 
 
+### In Case Of PostgreSQL
+
 위 문제를 재현해보자. 먼저 첫번째 세션에서 트랜잭션을 연 후 SELECT 쿼리를 통해 테이블의 데이터를 확인해보자. 앞서 `dirty read`때 입력 했던 데이터가 보인다. 
 
 ```sql
@@ -265,6 +271,68 @@ postgres=# select * from t;
 postgres=#
 ```
 
+T1의 `Transaction Isolation Level`을 `Repeatable Read`로 바꾼 후 account 테이블의 데이터를 읽어보자. 
+
+```sql
+postgres=# BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+BEGIN
+postgres=#  SHOW transaction_isolation;
+ transaction_isolation
+-----------------------
+ repeatable read
+(1 row)
+
+postgres=# select * from account;
+ id | name
+----+------
+  2 | a
+  3 | b
+  4 | c
+  5 | d
+(4 rows)
+```
+
+T2에서 다음과 같이 데이터를 입력하자. 
+
+```sql
+postgres=# begin;
+postgres=# insert into account(name) values('d');
+INSERT 0 1
+postgres=# commit;
+```
+
+이제 다시 T1에서 데이터를 다시 읽어보자. T1은 아직 트랜잭션이 열려있는 상태이다. `Transaction Isolation Level`이 `Repeatable Read`이기 때문에 원래 읽었던 데이터만 읽어지는것을 확인 할 수 있다. 
+
+```sql
+postgres=# select * from account;
+ id | name
+----+------
+  2 | a
+  3 | b
+  4 | c
+  5 | d
+(4 rows)
+```
+
+마지막으로 T1에서 `COMMIT`을 한 후 다시 데이터를 읽어보면, T2에서 입력을 데이터가 보이는것을 확인할 수 있다.
+
+```sql
+postgres=# commit;
+COMMIT
+
+postgres=# select * from account;
+ id | name
+----+------
+  2 | a
+  3 | b
+  4 | c
+  5 | d
+  6 | e
+(5 rows)
+
+postgres=#
+```
+
 ## How to know transaction isolation level
 
 ### Case Of PostgreSQL
@@ -308,7 +376,7 @@ mysql> SELECT @@GLOBAL.transaction_isolation, @@GLOBAL.transaction_read_only;
 1 row in set (0.00 sec)
 ```
 
-#### Sessio Transaction Isolation Level
+#### Session Transaction Isolation Level
 
 ```sql
 mysql> SELECT @@SESSION.transaction_isolation, @@SESSION.transaction_read_only;
