@@ -1,5 +1,17 @@
 # Transaction Isolation Level
 
+## What is the transaction?
+
+`Transaction`은 데이터베이스의 데이터를 읽고 쓰고 수정하기위한 하나의 작업단위로 더 이상 쪼갤 수 없는 가장 작은 작업단위를 말한다. `Transaction`의 전후로 데이터베이스의 일관성을 유지하기위한 네가지 속성이 있는데 이를 `ACID`라고한다.  
+
+### **A**tomicity
+
+`Transaction`의 모든 로직은 모두 수행되거나 그렇지 않아야한다. 때문에 `Atomicity`를 `All or nothing rule`이라고도 한다.  
+여기서는 다음 **두 가지 Operation**이 수반된다.  
+
+* **Abort** : `Transaction`이 중단되면, 모든 로직의 수행은 취소된다. 
+* **Commit** : `Transaction`이 commit되면, `Transaction`로직이 반영된다. 
+
 ## What is Transaction Isolation level?
 
 `Transaction`은 `RDBMS`에서 데이터를 변경하기 위한 근본적인 방법이다. `RDBMS`에서는 하나 이상의 `Transaction`이 동시에 동작하는것을 허용한다. 그리고 개발자가 각각의 `Transaction`이 서로 어떻게 상호작용할것인가를 명시하기 위한 표준 또는 특정 RDBMS에서 정의한 툴을 제공한다. 
@@ -317,3 +329,4 @@ mysql> SELECT @@SESSION.transaction_isolation, @@SESSION.transaction_read_only;
 * [Transaction Isolation in PostgreSQL](https://pgdash.io/blog/postgres-transactions.html)
 * [MySQL의 Transaction Isolation Levels](https://jupiny.com/2018/11/30/mysql-transaction-isolation-levels/)
 * [13.3.7 SET TRANSACTION Syntax](https://dev.mysql.com/doc/refman/8.0/en/set-transaction.html)
+* [ACID Properties in DBMS](https://www.geeksforgeeks.org/acid-properties-in-dbms/)
