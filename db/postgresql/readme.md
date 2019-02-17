@@ -61,6 +61,24 @@ Postgresql에서 실행되는 모든 쿼리를 로그로 남기고자한다면, 
 SELECT relation::regclass, * FROM pg_locks WHERE NOT GRANTED;
 ```
 
+## [SHOW](https://www.postgresql.org/docs/9.1/sql-show.html)
+
+`SHOW`명령은 런타임의 현재 설명을 화면에 출력한다.  이러한 설정값은 `SET`명령, `postgresql.conf` 설정파일 그리고 `PostgreSQL`서버를 실행시킬 때 command line 옵션을 통해 설정할 수 있다. 
+
+다음은 `SHOW`명령을 통해 확인 할 수 있는 유용한 정보들이다. 
+
+### SHOW config_file
+
+설정파일의 경로를 보여준다. 
+
+```sql
+postgres=# SHOW config_file;
+               config_file
+------------------------------------------
+ /var/lib/postgresql/data/postgresql.conf
+(1 row)
+```
+
 # Reference
 
 * [Lock Monitoring](https://wiki.postgresql.org/wiki/Lock_Monitoring)
