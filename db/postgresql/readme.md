@@ -79,6 +79,40 @@ postgres=# SHOW config_file;
 (1 row)
 ```
 
+# Trouble Shooting
+
+## ERROR:  current transaction is aborted, commands ignored until end of transaction block
+
+다음과 같이 트랜잭션을 연 상태에서 문법 실수(double quotation 사용)가 발생하면 다음과 같이(LINE 1: ...)에러가 발생한다. 
+
+```sql
+greenfrog=# BEGIN TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+BEGIN
+greenfrog=# update auth_user set username="adadfadf" where id = 149997;
+ERROR:  column "adadfadf" does not exist
+LINE 1: update auth_user set username="adadfadf" where id = 149997;
+```
+
+그리고 문법 실수를 수정해서 쿼리를 다시 실행해보면 다음과 같이(ERROR: current transaction is aborted ...) 에러가 발생한다. 
+
+```sql
+greenfrog=# update auth_user set username='greenfrog' where id=149997;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+```
+
+**Postgresql은 트랜잭션 내부에서 오류가 발생하면 해당 트랜잭션 내부에서는 더 이상 쿼리를 실행할 수 없다.** 따라서, 다음과 같이 `COMMIT` 또는 `ROLLBACK`을 수행한 후 트랜잭션을 다시 열어서 업무를 해야한다. 
+
+```sql
+greenfrog=# rollback;
+ROLLBACK
+
+or 
+
+greenfrog=# commit;
+COMMIT
+```
+
 # Reference
 
 * [Lock Monitoring](https://wiki.postgresql.org/wiki/Lock_Monitoring)
+* [[PostgreSQL] pg: current transaction is aborted, commands igrnored until end of transaction block 에러 해결법](https://brownbears.tistory.com/229)
