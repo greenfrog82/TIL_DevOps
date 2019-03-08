@@ -383,7 +383,7 @@ greenfrog=# commit
 COMMIT
 ```
 
-다시 `tx-2`을 확인해보면, 다음과 같이 `ERROR:  could not serialize access due to concurrent update`에러가 발생한 것을 알 수 있다. 조금 의아한것은 이 에러는 `serializable isolation level`이 적용되어 있을 떄 발생하는 에러라는 것이다. 결국, `tx-2`는 자신의 변경사항을 테이블에 반영하지 못했다. 
+다시 `tx-2`을 확인해보면, 다음과 같이 `ERROR:  could not serialize access due to concurrent update`에러가 발생한 것을 알 수 있다. **이는 `repeatable read`의 경우 트래잭션이 시작되었을 때 다른 트랜잭션에 의해 변경된 row에 대해서 수정이나 lock을 걸 수 없기 때문이다. 이는 `repeatable read`는 이미 생성 된 스냅샷을 통해 변경을 시도할텐데 이미 old version row이기 때문에 변경을 막는것으로 생각된다.**
 
 ```sql
 ERROR:  could not serialize access due to concurrent update
@@ -449,7 +449,7 @@ COMMIT
 ```
 
 다시 `tx-2`을 확인해보면, `tx-1`이 `commit`되자마자 `UPDATE 1`이 출력된것을 확인 할 수 있다. `select`쿼리를 통해 결과를 확인해보면 `tx-2`의 값이 테이블에 반영된것을 알 수 있다.  
-**이와 같은 결과가 나온 이유는 `tx-1`이 데이터를 업데이트했지만 뒤에 `tx-2`의 변경사항으로 다시 업데이트되었기 때문이다.** 이 결과는 두 트랜잭션이 모두 `default isolation level(read committed)`로 설정되어 있을때도 마찬가지이다.
+**이와 같은 결과가 나온 이유는 `tx-1`이 데이터를 업데이트했지만 뒤에 `tx-2`의 변경사항으로 다시 업데이트되었기 때문이다.** 이 결과는 두 트랜잭션이 모두 `default isolation level(read committed)`로 설정되어 있을때도 마찬가지이다. **이는 `read committed`는 업데이트를 할 때 이미 commit된 데이터를 새로 읽은 스탭샷을 기준으로 업데이트를 처리하기 때문에 가능하다.**
 
 **[tx-2]**
 
