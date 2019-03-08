@@ -37,6 +37,11 @@
 
 ## VACCUM
 
+`VACCUM`은 `MVCC`를 사용함에 따라 발생하는 `dead row`를 지워주는 작업이다. `VACCUM`작업을 간단히 정리하면 다음과 같다.  
+
+1. `dead row`를 가지고 있을것으로 추정되는 테이블의 모든 `page`(테이블의 row들의 집합으로 하나의 테이블에는 n개의 page가 있으며 하나의 page는 약8KB의 사이즈를 갖는다.)를 스캔한다. `visibility map`이라고 불리는 데이터 구조가 마지막 `VACCUM`이후에 모든 `page`를 추적하고 있기 때문에 `dead row`를 가지고 있는 테이블만 찾아서 스캔 할 수 있다.
+2. 각 `page`에서 `dead row`가 발견되면 `dead row`를 표시하는 `LP_DEAD`를 제거하고 `LP_UNUSED`표시해서 사용될 수 있도록 한다. 
+
 # Reference
 
 * [MVCC and VACUUM](http://rhaas.blogspot.com/2017/12/mvcc-and-vacuum.html?m=1)
