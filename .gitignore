@@ -1,4 +1,3 @@
 db/mysql/repo
-
 db/postgresql/repo/*
 !db/postgresql/repo/postgresql.conf
