@@ -124,6 +124,14 @@
 * `e .` - 현재 경로를 네비게이션한다.
 * `e ..` - 부모 경로를 네비게이션한다.
 
+## Executing External Command
+
+>:! external command
+
+예를들어, 현재 경로의 파일들을 확인하고 싶다면 다음과 같이 `:!`을 사용하면 된다. 
+
+>:! ls -al
+
 ## Replace
 
 **옵션**
