@@ -137,6 +137,40 @@ $ git diff de54ddb HEAD sample_1.txt
 
 ![git_diff_initial_commit_and_head](./git_diff_initial_commit_and_head.png)
 
+## 변경이 발생한 파일 목록 출력하기 
+
+`diff`명령의 다음 옵션을 사용하면 `source commit`과 `target commit`사이에서 변경 된 파일 목록을 출력할 수 있다. 
+
+>git diff --name-only \<source commit\> \<target commit\>
+
+예를들어, 다음과 같은 커밋 목록이 있다고 하자.
+
+```sh
+a782a93 (HEAD -> master, origin/master, origin/HEAD) move git from study to here.
+ebd3d1e Performance - About Apdex
+a212f36 Jenkins - add Poll SCM and Strategy for choosing what to build.
+f2a26b1 Merge branch 'master' of https://github.com/greenfrog82/TIL_DevOps
+07d65df VIM - How to perform external command in vim.
+06c4bbf Merge branch 'master' of https://github.com/greenfrog82/TIL_DevOps
+4b30a12 Postgres - psql commands.
+0d6ec2b DB - Transaction Isolation Level - What is the difference way to update same row read committed and repeatable read
+9f93b1f DB, Postgresql - update postgresql.conf to print all log.
+f2208bb Postgresql, Two Phase Locking vs MVCC and VACCUM - add VACCUM related content.
+217c23c .gitignore - negating postgresql.conf on .gitignore
+d4f8e0f .gitignore - negating postgresql.conf on .gitignore
+dafb154 Postgresql - Two-phase lockgin vs MVCC and VACCUM.
+```
+
+위 커밋 이력에서 **dafb154**와 **9f93b1f**사이에 변경이 발생한 파일 목록을 출력하면 다음과 같다. 
+
+```sh
+$ git diff --name-only dafb154 9f93b1f
+.gitignore
+db/postgresql/lock_mvcc_vaccum.md
+db/postgresql/repo/postgresql.conf
+git/git/gitignore.md
+```
+
 ## 참조
 
 * [Git, 분산버전 관리 시스템 - 차이점 살펴보기](https://mylko72.gitbooks.io/git/content/commit/diff.html)
