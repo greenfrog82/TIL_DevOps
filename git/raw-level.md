@@ -73,6 +73,33 @@ $ git cherry -v origin/master HEAD
 + 6c8738800941c569539cb5b491b8912e9b9e5ac2 test
 ```
 
+## How to find specific commit by commit message
+
+>git log -n [print commit count] --grep [commit message] [target branch]
+
+```sh
+$ git log -n 2 --grep test master
+commit 855c9a8335e06d9a71707b1b88cce5b37168af59
+Author: greenfrog82 <greenfrog82@naver.com>
+Date:   Wed Mar 27 11:15:08 2019 +0900
+
+    Git - intial commit about raw level command of git.
+
+commit a659bc140c2cd1467f4432cb8fadd6d1344c29a1
+Author: greenfrog82 <greenfrog82@naver.com>
+Date:   Mon Mar 25 22:00:36 2019 +0900
+
+    git - How to print changed file list.
+```
+
+만약 특정 브랜치에 머지되지 않은 commit을 찾고 싶다면, 
+
+>git log --no-merges -n [print commit count] --grep [commit message] [target branch]
+
+
+
+
+
 
 
 
