@@ -95,12 +95,3 @@ Date:   Mon Mar 25 22:00:36 2019 +0900
 만약 특정 브랜치에 머지되지 않은 commit을 찾고 싶다면, 
 
 >git log --no-merges -n [print commit count] --grep [commit message] [target branch]
-
-
-
-
-
-
-
-
-
