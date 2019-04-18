@@ -151,6 +151,8 @@
 * %s/foo/bar/gci or %s/foo\c/bar/g - 문서 전체에 대해서 foo를 대소문자 구분없이 검색한 후 변경하기 전 확인 절차를 거친다.
 * %s/foo/bar/gcI or %s/foo\C/bar/g - 문서 전체에 대해서 foo를 대소문자 구분하여 검색한 후 변경하기 전 확인 절차를 거친다.
 
+[Advanced Example](./advanced_replace_example.md)
+
 ## 참조
 
 * [vi 기본 사용법](http://soooprmx.com/wp/archives/2777)
