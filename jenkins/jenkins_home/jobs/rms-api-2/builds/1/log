@@ -1,0 +1,28 @@
+Started by GitHub push by jaeyoung-cho
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/rms-api-2
+using credential 478bfd59-4df6-4ba2-8907-8d4f0e929898
+Cloning the remote Git repository
+Cloning repository git@github.com:yogiyo/rms-api.git
+ > git init /var/jenkins_home/workspace/rms-api-2 # timeout=10
+Fetching upstream changes from git@github.com:yogiyo/rms-api.git
+ > git --version # timeout=10
+using GIT_SSH to set credentials 
+ > git fetch --tags --progress git@github.com:yogiyo/rms-api.git +refs/heads/*:refs/remotes/origin/*
+ > git config remote.origin.url git@github.com:yogiyo/rms-api.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url git@github.com:yogiyo/rms-api.git # timeout=10
+Fetching upstream changes from git@github.com:yogiyo/rms-api.git
+using GIT_SSH to set credentials 
+ > git fetch --tags --progress git@github.com:yogiyo/rms-api.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse refs/remotes/origin/test-ci-1^{commit} # timeout=10
+ > git rev-parse refs/remotes/origin/origin/test-ci-1^{commit} # timeout=10
+Checking out Revision 34f77637a5e90016e14a06c000a1c2a447f4bfef (refs/remotes/origin/test-ci-1)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 34f77637a5e90016e14a06c000a1c2a447f4bfef
+Commit message: "test 13"
+First time build. Skipping changelog.
+[rms-api-2] $ /bin/sh -xe /tmp/jenkins4650267885289755455.sh
++ echo Github hook trigger is working
+Github hook trigger is working
+Finished: SUCCESS

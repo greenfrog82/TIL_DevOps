@@ -1,0 +1,13 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<fingerprint>
+  <timestamp>2019-04-20 12:41:10.361 UTC</timestamp>
+  <md5sum>f4a2cc66520d2bc578d27389e1e5fe7b</md5sum>
+  <fileName>Credential id=478bfd59-4df6-4ba2-8907-8d4f0e929898 name=jaeyoung-cho</fileName>
+  <usages>
+    <entry>
+      <string>rms-api-2</string>
+      <ranges>1</ranges>
+    </entry>
+  </usages>
+  <facets/>
+</fingerprint>
