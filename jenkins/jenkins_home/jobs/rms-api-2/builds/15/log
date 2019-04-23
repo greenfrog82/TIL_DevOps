@@ -1,0 +1,43 @@
+Started by GitHub push by jaeyoung-cho
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/rms-api-2
+using credential 478bfd59-4df6-4ba2-8907-8d4f0e929898
+ > git rev-parse --is-inside-work-tree # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url git@github.com:yogiyo/rms-api.git # timeout=10
+Pruning obsolete local branches
+Fetching upstream changes from git@github.com:yogiyo/rms-api.git
+ > git --version # timeout=10
+using GIT_SSH to set credentials 
+ > git fetch --tags --progress git@github.com:yogiyo/rms-api.git +refs/heads/*:refs/remotes/origin/* --prune
+Seen branch in repository origin/be-1
+Seen branch in repository origin/bjs-test
+Seen branch in repository origin/code-review
+Seen branch in repository origin/master
+Seen branch in repository origin/rms-2-basic-dev-env
+Seen 5 remote branches
+ > git show-ref --tags -d # timeout=10
+Merging Revision 7ec2c253f2b474c2b3c4537177bb53983cc9f892 (origin/be-1) to origin/code-review, UserMergeOptions{mergeRemote='origin', mergeTarget='code-review', mergeStrategy='default', fastForwardMode='--ff'}
+ > git rev-parse origin/code-review^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f origin/code-review
+ > git merge --ff 7ec2c253f2b474c2b3c4537177bb53983cc9f892 # timeout=10
+ > git rev-parse HEAD^{commit} # timeout=10
+Seen branch in repository origin/be-1
+Seen branch in repository origin/bjs-test
+Seen branch in repository origin/code-review
+Seen branch in repository origin/master
+Seen branch in repository origin/rms-2-basic-dev-env
+Seen 5 remote branches
+ > git show-ref --tags -d # timeout=10
+Checking out Revision 8ec8bfe7f18bc1aaecfb5213f268addf0050b439 (origin/code-review)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8ec8bfe7f18bc1aaecfb5213f268addf0050b439
+Commit message: "Merge commit '7ec2c253f2b474c2b3c4537177bb53983cc9f892' into HEAD"
+First time build. Skipping changelog.
+[rms-api-2] $ /bin/sh -xe /tmp/jenkins2638527144707739592.sh
++ echo Github hook trigger is working
+Github hook trigger is working
++ echo /var/jenkins_home/workspace/rms-api-2
+/var/jenkins_home/workspace/rms-api-2
+Finished: SUCCESS

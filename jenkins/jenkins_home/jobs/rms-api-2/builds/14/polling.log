@@ -1,8 +1,8 @@
-Started on Apr 23, 2019 5:32:48 AM
-Started by event from 140.82.115.69 ⇒ https://60ec6f44.ngrok.io:8080/github-webhook/ on Tue Apr 23 05:32:48 UTC 2019
+Started on Apr 23, 2019 5:30:03 AM
+Started by event from 140.82.115.64 ⇒ https://60ec6f44.ngrok.io:8080/github-webhook/ on Tue Apr 23 05:30:03 UTC 2019
 Polling SCM changes on master
 Using strategy: Inverse
-[poll] Last Built Revision: Revision b0ffa2b87c77d442033cd693a4c4300c4d918738 (origin/be-1)
+[poll] Last Built Revision: Revision 319e827ebcd3fce1bd8e9417db015ec2ac93342e (origin/be-1)
 using credential 478bfd59-4df6-4ba2-8907-8d4f0e929898
  > git rev-parse --is-inside-work-tree # timeout=10
 Fetching changes from the remote Git repositories
@@ -20,6 +20,6 @@ Seen branch in repository origin/master
 Seen branch in repository origin/rms-2-basic-dev-env
 Seen 5 remote branches
  > git show-ref --tags -d # timeout=10
- > git log --full-history --no-abbrev --format=raw -M -m b0ffa2b87c77d442033cd693a4c4300c4d918738..7ec2c253f2b474c2b3c4537177bb53983cc9f892 # timeout=10
-Done. Took 2.3 sec
+ > git log --full-history --no-abbrev --format=raw -M -m 319e827ebcd3fce1bd8e9417db015ec2ac93342e..b0ffa2b87c77d442033cd693a4c4300c4d918738 # timeout=10
+Done. Took 2.6 sec
 Changes found

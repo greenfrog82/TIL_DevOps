@@ -27,6 +27,14 @@
         <buildChooser class="hudson.plugins.git.util.InverseBuildChooser"/>
       </hudson.plugins.git.extensions.impl.BuildChooserSetting>
       <hudson.plugins.git.extensions.impl.PruneStaleBranch/>
+      <hudson.plugins.git.extensions.impl.PreBuildMerge>
+        <options>
+          <mergeRemote>origin</mergeRemote>
+          <mergeTarget>code-review</mergeTarget>
+          <mergeStrategy>default</mergeStrategy>
+          <fastForwardMode>FF</fastForwardMode>
+        </options>
+      </hudson.plugins.git.extensions.impl.PreBuildMerge>
     </extensions>
   </scm>
   <canRoam>true</canRoam>
@@ -41,7 +49,9 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>echo &quot;Github hook trigger is working&quot;</command>
+      <command>echo &quot;Github hook trigger is working&quot;
+echo $WORKSPACE
+</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>

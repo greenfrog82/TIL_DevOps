@@ -1,0 +1,42 @@
+Started by GitHub push by jaeyoung-cho
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/rms-api-2
+using credential 478bfd59-4df6-4ba2-8907-8d4f0e929898
+ > git rev-parse --is-inside-work-tree # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url git@github.com:yogiyo/rms-api.git # timeout=10
+Pruning obsolete local branches
+Fetching upstream changes from git@github.com:yogiyo/rms-api.git
+ > git --version # timeout=10
+using GIT_SSH to set credentials 
+ > git fetch --tags --progress git@github.com:yogiyo/rms-api.git +refs/heads/*:refs/remotes/origin/* --prune
+Seen branch in repository origin/be-1
+Seen branch in repository origin/bjs-test
+Seen branch in repository origin/code-review
+Seen branch in repository origin/master
+Seen branch in repository origin/rms-2-basic-dev-env
+Seen 5 remote branches
+ > git show-ref --tags -d # timeout=10
+Merging Revision b0ffa2b87c77d442033cd693a4c4300c4d918738 (origin/be-1) to origin/code-review, UserMergeOptions{mergeRemote='origin', mergeTarget='code-review', mergeStrategy='default', fastForwardMode='--ff'}
+ > git rev-parse origin/code-review^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f origin/code-review
+ > git merge --ff b0ffa2b87c77d442033cd693a4c4300c4d918738 # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f b0ffa2b87c77d442033cd693a4c4300c4d918738
+ERROR: Branch not suitable for integration as it does not merge cleanly: Command "git merge --ff b0ffa2b87c77d442033cd693a4c4300c4d918738" returned status code 128:
+stdout: 
+stderr: 
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: empty ident name (for <(null)>) not allowed
+
+Finished: FAILURE
