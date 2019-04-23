@@ -1,0 +1,29 @@
+Started by GitHub push by jaeyoung-cho
+Running as SYSTEM
+Building in workspace /var/jenkins_home/workspace/rms-api-2
+using credential 478bfd59-4df6-4ba2-8907-8d4f0e929898
+ > git rev-parse --is-inside-work-tree # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url git@github.com:yogiyo/rms-api.git # timeout=10
+Pruning obsolete local branches
+Fetching upstream changes from git@github.com:yogiyo/rms-api.git
+ > git --version # timeout=10
+using GIT_SSH to set credentials 
+ > git fetch --tags --progress git@github.com:yogiyo/rms-api.git +refs/heads/*:refs/remotes/origin/* --prune
+Seen branch in repository origin/be-1
+Seen branch in repository origin/bjs-test
+Seen branch in repository origin/master
+Seen branch in repository origin/rms-2-basic-dev-env
+Seen branch in repository origin/test-ci
+Seen branch in repository origin/test-ci-1
+Seen 6 remote branches
+ > git show-ref --tags -d # timeout=10
+Checking out Revision 319e827ebcd3fce1bd8e9417db015ec2ac93342e (origin/be-1)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 319e827ebcd3fce1bd8e9417db015ec2ac93342e
+Commit message: "be-1 a"
+First time build. Skipping changelog.
+[rms-api-2] $ /bin/sh -xe /tmp/jenkins2887663745586666600.sh
++ echo Github hook trigger is working
+Github hook trigger is working
+Finished: SUCCESS

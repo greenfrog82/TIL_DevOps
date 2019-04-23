@@ -1,0 +1,6 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<org.jenkinsci.plugins.github.pullrequest.GitHubPRRepository plugin="github-pullrequest@0.2.4">
+  <fullName>GitHubRepositoryName[host=github.com,username=yogiyo,repository=rms-api]</fullName>
+  <githubUrl>https://github.com/yogiyo/rms-api/</githubUrl>
+  <pulls class="concurrent-hash-map"/>
+</org.jenkinsci.plugins.github.pullrequest.GitHubPRRepository>

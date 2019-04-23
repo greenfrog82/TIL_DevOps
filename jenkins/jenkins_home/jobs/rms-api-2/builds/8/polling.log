@@ -1,0 +1,25 @@
+Started on Apr 23, 2019 2:59:45 AM
+Started by event from 140.82.115.15 ⇒ https://f0b80d36.ngrok.io:8080/github-webhook/ on Tue Apr 23 02:59:45 UTC 2019
+Polling SCM changes on master
+Using strategy: Inverse
+[poll] Last Built Revision: Revision f6579da655eba5e68e53eb637575ea196012ca23 (refs/remotes/origin/test-ci-1)
+using credential 478bfd59-4df6-4ba2-8907-8d4f0e929898
+ > git rev-parse --is-inside-work-tree # timeout=10
+Fetching changes from the remote Git repositories
+ > git config remote.origin.url git@github.com:yogiyo/rms-api.git # timeout=10
+Pruning obsolete local branches
+Fetching upstream changes from git@github.com:yogiyo/rms-api.git
+ > git --version # timeout=10
+using GIT_SSH to set credentials 
+ > git fetch --tags --progress git@github.com:yogiyo/rms-api.git +refs/heads/*:refs/remotes/origin/* --prune
+Polling for changes in
+Seen branch in repository origin/bjs-test
+Seen branch in repository origin/master
+Seen branch in repository origin/rms-2-basic-dev-env
+Seen branch in repository origin/test-ci
+Seen branch in repository origin/test-ci-1
+Seen 5 remote branches
+ > git show-ref --tags -d # timeout=10
+ > git log --full-history --no-abbrev --format=raw -M -m f6579da655eba5e68e53eb637575ea196012ca23..e35709d909f5753713654945f4c4e1209787a0de # timeout=10
+Done. Took 2.9 sec
+Changes found

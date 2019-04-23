@@ -1,0 +1,12 @@
+Started on Apr 23, 2019 2:42:33 AM
+Started by event from 140.82.115.4 ⇒ https://f0b80d36.ngrok.io:8080/github-webhook/ on Tue Apr 23 02:42:33 UTC 2019
+Using strategy: Default
+[poll] Last Built Revision: Revision 1d361ffa2442ae1332d924adf7bd223d8ced2281 (refs/remotes/origin/test-ci-1)
+using credential 478bfd59-4df6-4ba2-8907-8d4f0e929898
+ > git --version # timeout=10
+using GIT_SSH to set credentials 
+ > git ls-remote -h git@github.com:yogiyo/rms-api.git # timeout=10
+Found 5 remote heads on git@github.com:yogiyo/rms-api.git
+[poll] Latest remote head revision on refs/heads/test-ci-1 is: ce2864bdaadc907db880f1d7a46b62567b5584b3
+Done. Took 1.8 sec
+Changes found

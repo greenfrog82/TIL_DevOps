@@ -10,6 +10,35 @@
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
+        <org.jenkinsci.plugins.github.pullrequest.GitHubPRTrigger plugin="github-pullrequest@0.2.4">
+          <spec></spec>
+          <triggerMode>HEAVY_HOOKS</triggerMode>
+          <cancelQueued>false</cancelQueued>
+          <abortRunning>false</abortRunning>
+          <skipFirstRun>false</skipFirstRun>
+          <repoProviders>
+            <com.github.kostyasha.github.integration.generic.repoprovider.GitHubPluginRepoProvider>
+              <cacheConnection>true</cacheConnection>
+              <manageHooks>true</manageHooks>
+              <repoPermission>ADMIN</repoPermission>
+            </com.github.kostyasha.github.integration.generic.repoprovider.GitHubPluginRepoProvider>
+          </repoProviders>
+          <errorsAction>
+            <description>GitHub Pull Requests Trigger Errors</description>
+            <errors class="java.util.Collections$SynchronizedSet" serialization="custom">
+              <java.util.Collections_-SynchronizedCollection>
+                <default>
+                  <c class="set"/>
+                  <mutex class="java.util.Collections$SynchronizedSet" reference="../../.."/>
+                </default>
+              </java.util.Collections_-SynchronizedCollection>
+            </errors>
+          </errorsAction>
+          <events>
+            <org.jenkinsci.plugins.github.pullrequest.events.impl.GitHubPRCommitEvent/>
+          </events>
+          <preStatus>false</preStatus>
+        </org.jenkinsci.plugins.github.pullrequest.GitHubPRTrigger>
         <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.29.4">
           <spec></spec>
         </com.cloudbees.jenkins.GitHubPushTrigger>
