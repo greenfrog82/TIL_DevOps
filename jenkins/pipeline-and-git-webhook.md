@@ -71,3 +71,4 @@ Connections                   ttl     opn     rt1     rt5     p50     p90
 * [Jenkins 로 빌드 자동화하기 1 - GitHub 에 push 되면 자동 빌드하도록 구성](https://yaboong.github.io/jenkins/2018/05/14/github-webhook-jenkins/)
 * [ngrok으로 로컬 네트워크의 터널 열기](https://blog.outsider.ne.kr/1159)
 * [Jenkins and github integration using webhooks](https://blog.tentamen.eu/jenkins-and-github-integration-using-webhooks/)
+* [Auto Merge](https://andrewtarry.com/jenkins_git_merges/)
