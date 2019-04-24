@@ -14,3 +14,13 @@ sudo
 ll
 ls -al
 exit
+ll
+ls -al
+cd /var/jenkins_home/
+ls -al
+pwd
+ll
+exit
+ll
+ls -al
+exit

@@ -1,3 +1,7 @@
 db/mysql/repo
 db/postgresql/repo/*
 !db/postgresql/repo/postgresql.conf
+
+.DS_Store
+jenkins/jenkins_home/jobs
+jenkins/jenkins_home/workspace

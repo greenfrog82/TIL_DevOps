@@ -30,7 +30,7 @@
       <hudson.plugins.git.extensions.impl.PreBuildMerge>
         <options>
           <mergeRemote>origin</mergeRemote>
-          <mergeTarget>code-review</mergeTarget>
+          <mergeTarget>master</mergeTarget>
           <mergeStrategy>default</mergeStrategy>
           <fastForwardMode>FF</fastForwardMode>
         </options>
@@ -49,9 +49,8 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>echo &quot;Github hook trigger is working&quot;
-echo $WORKSPACE
-</command>
+      <command>. ~/.virtualenv/rms/bin/activate
+. manage.py test -k</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
