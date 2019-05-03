@@ -136,6 +136,34 @@ postgres=# \d
 (17 rows)
 ```
 
+### \l - list of databases
+
+```sql
+postgres-# \l
+                                List of databases
+   Name    |  Owner   | Encoding | Collate | Ctype |   Access privileges   
+-----------+----------+----------+---------+-------+-----------------------
+ postgres  | postgres | UTF8     | C       | C     | 
+ template0 | postgres | UTF8     | C       | C     | =c/postgres          +
+           |          |          |         |       | postgres=CTc/postgres
+ template1 | postgres | UTF8     | C       | C     | =c/postgres          +
+           |          |          |         |       | postgres=CTc/postgres
+ testdb    | postgres | UTF8     | C       | C     | 
+(4 rows)
+```
+
+### \c select databases
+
+```sql
+postgres-# \c testdb
+psql (11.2 (Debian 11.2-1.pgdg90+1))
+Type "help" for help.
+You are now connected to database "testdb" as user "postgres".
+testdb=# 
+```
+
 # Reference
 
 * [Postgres Guide - Psql](http://postgresguide.com/utilities/psql.html)
+* [PostgreSQL - CREATE Database](https://www.tutorialspoint.com/postgresql/postgresql_create_database.htm)
+* [PostgreSQL - SELECT Database](https://www.tutorialspoint.com/postgresql/postgresql_select_database.htm)
